@@ -1,0 +1,8 @@
+numpy
+scipy
+sklearn
+seaborn
+matplotlib
+pandas
+bs4
+soupselect
