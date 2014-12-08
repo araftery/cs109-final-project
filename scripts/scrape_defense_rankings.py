@@ -1,3 +1,8 @@
+"""
+This script scrapes team defensive data for each season from 2000 to 2013
+from pro-football-reference.com and saves the data as CSVs.
+"""
+
 from bs4 import BeautifulSoup
 import csv
 import requests
