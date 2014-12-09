@@ -7,3 +7,4 @@ pandas
 bs4
 soupselect
 lxml
+statsmodels
