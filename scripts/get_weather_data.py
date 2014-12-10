@@ -41,7 +41,7 @@ def get_weather(date, city, state, dome):
 
     return mean_temp, rain, snow, precipitation_inches, snowfall_inches, wind_speed
 
-season = 2013
+season = 2014
 
 df = pd.DataFrame.from_csv('../data/play_by_play/{}.csv'.format(season)).reset_index()
 games_list = df.copy().drop_duplicates(cols=['Date', 'Tm', 'Opp'])
@@ -49,10 +49,10 @@ games_list_tuples = [tuple(x) for x in games_list[['Date', 'Tm', 'Opp', 'Team Ga
 games = set()
 
 for date, team, opponent, home_away, week in games_list_tuples:
-    if home_away == 'Home':
+    if home_away == 'Home' or home_away == 'home':
         home_team = team
         away_team = opponent
-    elif home_away == 'Away':
+    elif home_away == 'Away' or home_away == 'away':
         home_team = opponent
         away_team = team
 

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import csv
 import requests
 
-for season in range(2000, 2014):
+for season in range(2000, 2015):
     url = 'http://www.pro-football-reference.com/years/{}/opp.htm'.format(season)
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'lxml')
