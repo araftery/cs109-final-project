@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <style>
+    body
+    {
+        padding-top:40px;
+
+    }
+</style>
+    </head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation"><a href="index.html">Home</span></a></li>
+          <li role="presentation"><a href="model.html">Model</a></li>
+          <li role="presentation"><a href="video.html">Video</a></li>
+          <li role="presentation"><a href="data.html">Data</a></li>
+          <li role="presentation" class="active"><a href="source.html">Source Code</a></li>
+          <li role="presentation"><a href="http://nbviewer.ipython.org/github/araftery/cs109-final-project/blob/master/process_book.ipynb">Process Book</a></li>         
+        </ul>
+      </div>
+    </nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Source Code</h1>
+            <ul>
+                <li><a href="http://www.github.com/araftery/cs109-final-project/">Main Repository</a>
+                    <ul>
+                        <li>This repository has all of our data, our process book, scraping scripts, etc.</li>
+                    </ul>
+                </li>
+                <li><a href="http://www.github.com/araftery/cs109-final-project-backend/">API Backend (Django) Repository</a>
+                    <ul>
+                        <li>This repository is a <a href="https://www.djangoproject.com/">Django</a> app that contains a pickled (serialized) version of our random forest model. The interactive visualization on the <a href="model.html">Model page</a> makes API calls to this app to run parameters through the model and retrieve predicted probabilities.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

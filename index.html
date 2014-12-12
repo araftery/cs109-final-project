@@ -2,342 +2,40 @@
 <meta charset="utf-8">
 <html>
   <head>
-
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
     <style>
-    body { padding-top: 70px; }
+    body
+    {
+        padding-top:40px;
 
-      rect.bordered {
-        stroke: #E6E6E6;
-        stroke-width:2px;   
-      }
+    }
+</style>
+    </head>
 
-      text.mono {
-        font-size: 9pt;
-        font-family: Consolas, courier;
-        fill: #aaa;
-      }
-
-      text.white
-      {
-        fill: #fff !important;
-      }
-
-      body{
-        width:98%;
-      }
-
-      text.axis-label
-      {
-        fill: #000;
-      }
-
-
-    </style>
-    <script src="http://d3js.org/d3.v3.js"></script>
-  </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
       <div class="container-fluid">
         <ul class="nav navbar-nav nav-pills">
-          <li role="presentation"class="active"><a href="#">Home</span></a></li>   
-          <li role="presentation"><a href="#">Video</a></li>    
-          <li role="presentation"><a href="https://github.com/araftery/cs109-final-project">GitHub</a></li> 
-          <li role="presentation"><a href="process_book.ipynb">Process Book</a></li>         
+          <li role="presentation" class="active"><a href="index.html">Home</span></a></li>
+          <li role="presentation"><a href="model.html">Model</a></li>
+          <li role="presentation"><a href="video.html">Video</a></li>
+          <li role="presentation"><a href="data.html">Data</a></li>
+          <li role="presentation"><a href="source.html">Source Code</a></li>
+          <li role="presentation"><a href="http://nbviewer.ipython.org/github/araftery/cs109-final-project/blob/master/process_book.ipynb">Process Book</a></li>         
         </ul>
       </div>
     </nav>
+
+<div class="container">
     <div class="row">
-      <div class="col-md-8">
-        <div id="initialField"> <img src="initialField.gif" width = "100%"> </div>
-        <div id="chart" ></div>
-      </div>
-      <div id="inputs" class="col-md-4">
-        <div class="row">
-          <div class="col-md-4">
-            <select name="Down" id="downInput" class="form-control">
-              <option value="" disabled selected>Down</option>
-              <option value="1">1st Down</option>
-              <option value="2">2nd Down</option>
-              <option value="3">3rd Down</option>
-              <option value="4">4th Down</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <input id="toGoInput" type="number" class = "form-control" placeholder="Yards to Go"></input>
-          </div>
+        <div class="col-md-12">
+            <h1>Predicting an NFL Team's Next Play</h1>
         </div>
-        <br>
-        <div class="row">
-          <div class="col-md-4">
-            <select id="offensiveInput" name="Offensive Team" class="form-control">
-              <option value="" disabled selected>Offensive Team</option>
-              <option value="Cardinals">Arizona Cardinals</option>
-              <option value="Falcons">Atlanta Falcons</option>
-              <option value="Ravens">Baltimore Ravens</option>
-              <option value="Bills">Buffalo Bills</option>
-              <option value="Panthers">Carolina Panthers</option>
-              <option value="Bears">Chicago Bears</option>
-              <option value="Bengals">Cincinnati Bengals</option>
-              <option value="Browns">Cleveland Browns</option>
-              <option value="Cowboys">Dallas Cowboys</option>
-              <option value="Broncos">Denver Broncos</option>
-              <option value="Lions">Detroit Lions</option>
-              <option value="Packers">Green Bay Packers</option>
-              <option value="Texans">Houston Texans</option>
-              <option value="Colts">Indianapolis Colts</option>
-              <option value="Jaguars">Jacksonville Jaguars</option>
-              <option value="Chiefs">Kansas City Chiefs</option>
-              <option value="Dolphins">Miami Dolphins</option>
-              <option value="Vikings">Minnesota Vikings</option>
-              <option value="Patriots">New England Patriots</option>
-              <option value="Saints">New Orleans Saints</option>
-              <option value="Giants">New York Giants</option>
-              <option value="Jets">New York Jets</option>
-              <option value="Raiders">Oakland Raiders</option>
-              <option value="Eagles">Philadelphia Eagles</option>
-              <option value="Steelers">Pittsburgh Steelers</option>
-              <option value="Rams">Saint Louis Rams</option>
-              <option value="Chargers">San Diego Chargers</option>
-              <option value="49ers">San Francisco 49ers</option>
-              <option value="Seahawks">Seattle Seahawks</option>
-              <option value="Buccaneers">Tampa Bay Buccaneers</option>
-              <option value="Titans">Tennessee Titans</option>
-              <option value="Redskin">Washington Redskins</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <input id="scoreInput" type="number" class = "form-control" placeholder="+/-"></input>
-          </div>
-          <div class="col-md-4">
-            <select id="defensiveInput" name="Defensive Team" class="form-control">
-              <option value="" disabled selected>Defensive Team</option>
-              <option value="Cardinals">Arizona Cardinals</option>
-              <option value="Falcons">Atlanta Falcons</option>
-              <option value="Ravens">Baltimore Ravens</option>
-              <option value="Bills">Buffalo Bills</option>
-              <option value="Panthers">Carolina Panthers</option>
-              <option value="Bears">Chicago Bears</option>
-              <option value="Bengals">Cincinnati Bengals</option>
-              <option value="Browns">Cleveland Browns</option>
-              <option value="Cowboys">Dallas Cowboys</option>
-              <option value="Broncos">Denver Broncos</option>
-              <option value="Lions">Detroit Lions</option>
-              <option value="Packers">Green Bay Packers</option>
-              <option value="Texans">Houston Texans</option>
-              <option value="Colts">Indianapolis Colts</option>
-              <option value="Jaguars">Jacksonville Jaguars</option>
-              <option value="Chiefs">Kansas City Chiefs</option>
-              <option value="Dolphins">Miami Dolphins</option>
-              <option value="Vikings">Minnesota Vikings</option>
-              <option value="Patriots">New England Patriots</option>
-              <option value="Saints">New Orleans Saints</option>
-              <option value="Giants">New York Giants</option>
-              <option value="Jets">New York Jets</option>
-              <option value="Raiders">Oakland Raiders</option>
-              <option value="Eagles">Philadelphia Eagles</option>
-              <option value="Steelers">Pittsburgh Steelers</option>
-              <option value="Rams">Saint Louis Rams</option>
-              <option value="Chargers">San Diego Chargers</option>
-              <option value="49ers">San Francisco 49ers</option>
-              <option value="Seahawks">Seattle Seahawks</option>
-              <option value="Buccaneers">Tampa Bay Buccaneers</option>
-              <option value="Titans">Tennessee Titans</option>
-              <option value="Redskin">Washington Redskins</option>
-            </select>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-3">
-            <input id="tempInput" type="number" class = "form-control" placeholder="Temp (F)"></input>
-          </div>
-          <div class="col-md-4">
-            <input id="rainInput" type="number" class = "form-control" placeholder="Rain (inches)"></input>
-          </div>
-          <div class="col-md-5">
-            <input id="windInput" type="number" class = "form-control" placeholder="Wind Speed (mph)"></input>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <button type="button" id="submitMap" class="btn btn-primary btn-lg" style="width:100%" onclick="drawFieldMap()">Draw Field Map</button>
-        </div>
-      </div>
-    <div>
-
-    <script type="text/javascript">
-
-    var margin = { top: 50, right: 0, bottom: 100, left: 50 },
-    width = 960 - margin.left - margin.right,
-    height = 430 - margin.top - margin.bottom,
-    totalYards = 100.0,
-    totalTimes = 31.0,
-    gridSize = Math.floor(width / totalYards),
-    legendElementWidth = gridSize*2,
-    legendElementHeight = Math.floor(height / totalTimes)
-    buckets = 9,
-    colors = ["#64e500","#57cf03","#4BBA06","#3fa509","#33900D","#267b10","#1a6613","#0e5116","#023c1a"], // alternatively colorbrewer.YlGnBu[9]
-    timeRems = d3.range(0.0,totalTimes,1),
-    yardLines = d3.range(0,totalYards,1);
-
-    var clearOldMap = function(){
-      $("#chart").html("");
-
-    }
-    var drawFieldMap = function(){
-
-
-      clearOldMap(); 
-      $("#initialField").css("height", "0");
-      $("#initialField").hide();
-
-
-
-      var params = {
-        down: $("#downInput").val(),
-        togo: $("#toGoInput").val(),
-        score_diff : $("#scoreInput").val(),
-        mean_temp: $("#tempInput").val(),
-        precip: $("#rainInput").val(),
-        wind_speed: $("#windInput").val(),
-        offense: $("#offensiveInput").val(),
-        defense: $("#defensiveInput").val(),
-      }
-
-      if (params.down == null 
-        || params.togo== null
-        || params.togo < 0
-        || params.score_diff == null
-        || params.mean_temp == null
-        || params.precip == null
-        || params.precip < 0
-        || params.wind_speed == null
-        || params.wind_speed < 0
-        || params.offense == null
-        || params.defense == null
-        || params.defense == params.offense
-        )
-      {
-        alert("Invalid Inputs");
-      }
-      else
-      {
-
-        d3.json("http://nfl-predict.herokuapp.com/predict?" + $.param(params),
-          function(error, initData) {
-
-            $("#initialField").css("height", "0");
-            $("#initialField").hide();
-
-
-
-
-            var data = []
-            for (var i = 0; i < initData.prob_pass.length; i++){
-              data.push({time: initData['prob_pass'][i][0][1], yardLine: initData['prob_pass'][i][0][0], value: initData['prob_pass'][i][1]});
-            }
-            min = d3.min(data, function (d) { return d.value; })
-            max = d3.max(data, function (d) { return d.value; })
-
-            var colorScale = d3.scale.quantile()
-                .domain([0, 1])
-                .range(colors);
-
-
-            var svg = d3.select("#chart").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            var dayLabels = svg.selectAll(".dayLabel")
-                .data(timeRems)
-                .enter().append("text")
-                  .text(function (d) { return d; })
-                  .attr("x", 0)
-                  .attr("y", function (d, i) { return i * gridSize; })
-                  .style("text-anchor", "end")
-                  .attr("transform", "translate(-10," + (gridSize / 2 - 7) + ")")
-                  .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis" : "dayLabel mono axis"); });
-
-            var timeLabels = svg.selectAll(".timeLabel")
-                .data(yardLines)
-                .enter().append("text")
-                  .text(function(d) { return d; })
-                  .attr("x", function(d, i) { return i * gridSize; })
-                  .attr("y", 0)
-                  .style("text-anchor", "middle")
-                  .attr("transform", function(d, i) { 
-                        return "translate(" + (-6) + ", -6)" +
-                               "rotate(90 "+ ((i + 0.5) * gridSize) + " " + (-6) +")";
-                   } )
-                   .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis" : "timeLabel mono axis"); });
-
-
-            //Create X axis label   
-            svg.append("text")
-                .attr("x", width / 2 )
-                .attr("y", -margin.top / 1.5)
-                .style("text-anchor", "middle")
-                .attr("class", "axis-title")
-                .text("Yard Line (Offense -->)");
-
-            svg.append("text")
-                .attr("y", height / 2 )
-                .attr("x", -margin.left / 1.5)
-                .style("text-anchor", "middle")
-                .attr("transform", "rotate(-90 " + -margin.left / 1.5 + " " + height / 2 + ")")
-                .attr("class", "axis-title")
-                .text("Minutes Remaining in Half");
-
-
-            var heatMap = svg.selectAll(".hour")
-                .data(data)
-                .enter().append("rect")
-                .attr("x", function(d) { return (d.yardLine - 1) * gridSize; })
-                .attr("y", function(d) { return (d.time - 1) * gridSize; })
-                .attr("rx", 1)
-                .attr("ry", 1)
-                .attr("class", "hour")
-                .attr("width", gridSize)
-                .attr("height", gridSize)
-                .style("fill", colors[0]);
-
-            heatMap.transition().duration(1000)
-                .style("fill", function(d) { return colorScale(d.value); });
-
-            heatMap.append("title").text(function(d) { return d.value; });
-                
-            var legend = svg.selectAll(".legend")
-                .data([0].concat(colorScale.quantiles()), function(d) { return d; })
-                .enter().append("g")
-                .attr("class", "legend");
-
-            legend.append("rect")
-              .attr("x", function(d, i) { return legendElementWidth * i * 3; })
-              .attr("y", height)
-              .attr("width", legendElementWidth * 3)
-              .attr("height", legendElementHeight * 5)
-              .style("fill", function(d, i) { return colors[i]; });
-
-            legend.append("text")
-              .attr("class", "mono white")
-              .text(function(d) { return "≥ " + (Math.round(d * 100) / 100); })
-              .attr("x", function(d, i) { return legendElementWidth * i * 3; })
-              .attr("y", height + gridSize);
-
-        })
-        $("#submitMap").html("Update Field Map")
-      }
-    }
-
-    </script>
-  </body>
+    </div>
+</div>
+</div>
+</body>
 </html>
