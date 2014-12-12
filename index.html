@@ -23,16 +23,18 @@
         fill: #aaa;
       }
 
-      text.axis-workweek {
-        fill: #000;
-      }
-
-      text.axis-worktime {
-        fill: #000;
+      text.white
+      {
+        fill: #fff !important;
       }
 
       body{
         width:98%;
+      }
+
+      text.axis-label
+      {
+        fill: #000;
       }
 
 
@@ -172,7 +174,7 @@
 
     <script type="text/javascript">
 
-    var margin = { top: 50, right: 0, bottom: 100, left: 30 },
+    var margin = { top: 50, right: 0, bottom: 100, left: 50 },
     width = 960 - margin.left - margin.right,
     height = 430 - margin.top - margin.bottom,
     totalYards = 100.0,
@@ -245,7 +247,7 @@
             max = d3.max(data, function (d) { return d.value; })
 
             var colorScale = d3.scale.quantile()
-                .domain([min,max])
+                .domain([0, 1])
                 .range(colors);
 
 
@@ -263,7 +265,7 @@
                   .attr("y", function (d, i) { return i * gridSize; })
                   .style("text-anchor", "end")
                   .attr("transform", "translate(-10," + (gridSize / 2 - 7) + ")")
-                  .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
+                  .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis" : "dayLabel mono axis"); });
 
             var timeLabels = svg.selectAll(".timeLabel")
                 .data(yardLines)
@@ -276,7 +278,25 @@
                         return "translate(" + (-6) + ", -6)" +
                                "rotate(90 "+ ((i + 0.5) * gridSize) + " " + (-6) +")";
                    } )
-                   .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
+                   .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis" : "timeLabel mono axis"); });
+
+
+            //Create X axis label   
+            svg.append("text")
+                .attr("x", width / 2 )
+                .attr("y", -margin.top / 1.5)
+                .style("text-anchor", "middle")
+                .attr("class", "axis-title")
+                .text("Yard Line (Offense -->)");
+
+            svg.append("text")
+                .attr("y", height / 2 )
+                .attr("x", -margin.left / 1.5)
+                .style("text-anchor", "middle")
+                .attr("transform", "rotate(-90 " + -margin.left / 1.5 + " " + height / 2 + ")")
+                .attr("class", "axis-title")
+                .text("Minutes Remaining in Half");
+
 
             var heatMap = svg.selectAll(".hour")
                 .data(data)
@@ -308,10 +328,11 @@
               .style("fill", function(d, i) { return colors[i]; });
 
             legend.append("text")
-              .attr("class", "mono")
+              .attr("class", "mono white")
               .text(function(d) { return "≥ " + (Math.round(d * 100) / 100); })
               .attr("x", function(d, i) { return legendElementWidth * i * 3; })
               .attr("y", height + gridSize);
+
         })
         $("#submitMap").html("Update Field Map")
       }
