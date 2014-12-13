@@ -9,7 +9,17 @@
     body
     {
         padding-top:40px;
+        padding-bottom:20px;
 
+    }
+
+    .block
+    {
+      display:block;
+    }
+    .center
+    {
+      text-align:center;
     }
 </style>
     </head>
@@ -33,7 +43,88 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Predicting an NFL Team's Next Play</h1>
+
+            <p>Glynis Healey, Theo Levine, and Andrew Raftery</p>
+            <div>
+              <img src="cover-photo.png" width="100%" />
+            </div>
+
+            <h2>Overview</h2>
+            <p>
+            Over the course of a National Football League (NFL) season, there are thousands of individual plays. On each play, in which the offensive team is trying to advance the requisite number of yards in order to obtain a first down, the team must make a decision: are they going to pass the football, or try to run it? Each strategy has its own pros and cons: passing tends to yield a larger number of yards per attempt, but can be riskier, while running has a lower chance of gaining a lot of yards, but usually results in some sort of incremental gain (unlike passes, which can be declared incomplete). For a defense, being able to predict which type of play the opposing team is going to run would eliminate the huge advantage that the offense draws from knowing what’s coming.
+          </p>
+
+          <p>
+            The goal of our project, therefore, was twofold: first, we wanted to create a model that was able to predict an offense’s next play based on the current game situation. For explanatory variables, we included a number of features that described the game at that point: the time remaining, the quarter, the score differential between the two teams, the yard line, the number of yards to go before the team achieved a first down, etc. We also included variables that reflected the weather at that moment in time: mean temperature, whether it was raining or snowing, and inches of precipitation of each. Then, we added covariates that described each team’s unique skill level: passer rating, average yards per carry for a running back, the ranking of the defense, and how the defense performed against both the pass and the run. These did not describe the actual unique game situation, but we felt it was important to include the skills of each team at either passing or running as potential lurking variables, which could have a large effect on a team’s decision-making regardless of how the individual game itself was going at a particular moment in time.
+          </p>
+          <p>
+            Our second goal after creating the model, then, was to see which explanatory variables were actually the most significant predictors of an offense’s next play. Because we had so many variables to work with, describing all aspects of a game situation, its surrounding atmosphere, and the skills of its players, we were curious as to whether all three general categories had some sort of effect on predicting a team’s next play, or whether teams were just way more likely to pass, for example, when they were losing or when there was very little time remaining in the game, and everything else had little to no effect. Therefore, at the conclusion of our project, we hoped to have a model for predicting a team’s next play, as well as to have gained insight as to what variables were the most significant predictors of whether a team chose to pass or run.
+          </p>
+          <p>
+            Because we were predicting a classification variable, we planned to use several methods we learned throughout the course to determine which one yielded the predictive model with the greatest accuracy. Our data focused on the 2013 NFL season, and we split it into a training and a test data set in order to test our model on a general data set. We started out with generalized linear models, such as probit and logit regression, and then moved to machine learning with the use of random forests and K-Nearest Neighbors.
+          </p>
+
+          <h2>2013 Play-by-Play Data</h2>
+
+          <p>We focused on play-by-play data from the 2013 season. This dataset includes every offensive play from the regular season—the only plays it exludes are special teams plays like kickoffs, extra point tries, and punts. To that dataset, we scraped a few NFL statistics websites for extra data, including the defense's yards allowed per attempt against the run and pass, quarterback passer ratings, running back yards per carry, and weather. Finally, we calculated some "in-game" metrics, that would be available to a coach making a play call during a game (for example, the success percentage of pass plays run up to that point in that game). Here are some snapshots of the data:</p>
+
+          <div class="row">
+            <img src="plots/pass_distr.png" style="float:left;" width="48%"/>
+            <img src="plots/pass_distr_qtr.png" style="float:right;" width="48%" />
+          </div>
+
+
+        <p>As you can see, the % of passing plays run by each team is roughly normally distributed. The mean percentage of passing plays for NFL teams in 2013 was .58, so, in general, teams are slightly more likely to pass than run on any given play. This distribution seems to hold even when split by quarter.</p>
+
+        <h2>Our Model</h2>
+
+        <div class="row">
+            <img src="plots/tree_accuracy.png" style="float:left;" width="48%"/>
+            <img src="plots/column_importance.png" style="float:right;" width="48%" />
         </div>
+
+        <p>After testing various model types, including OLS regression, logit regression, support vector machine, K-nearest neighbors, and random forests, we settled on using a random forest model. We tested several numbers of trees, and decided that about 200 trees provided high accuracy (see chart above left). Finally, we investigated the importance of each column in our random tree model, and discovered that some parameters weren't necessary (see chart above left). See the "Final Model" section below for a full list of parameters that we kept.
+        </p>
+
+        <h3>General vs. Specific Team Models</h3>
+
+        <p>One last option we investigated was whether a specific model trained for each team would yield more accurate results than a general model trained on all of the data. We trained a model for each team and ran the test data against both each specific team model and the general model.</p>
+
+        <div class="center">
+          <img src="plots/general_vs_specific.png" width="80%" />
+        </div>
+
+        <p>
+          As you can see in the plot above, the specific and general models perform similarly, but the general model edges the specific model for 19/32 teams, and on the remaining 13, the specific model scores better by only .01 or .02. At first, this result may seem surprising: the variable we are ultimately trying to tease out is a coach's tendencies. If we're able to account for most other factors, which our X-variables attempt to do (time remaining, position on field, down, skill of the quarterback, skill of the defense, etc.), specific coach's strategy must account for the remaining variation. One would think then, that making a specific model for each team (i.e., a specific model for each coaching staff), it would predict that coaching staff's future moves more accurately than a model trained on data from all 32 NFL teams. One likely explanation for the specific models' inferiority is that there simply isn't enough data in the dataset for each team to train an individual model. The mean n obs when broken by team is 997, and the minimum is a measley 596 for the Cleveland Browns. It's not so surprising, then, that individual models trained on so little data don't perform as well (see chart above, the Browns, for example have the second largest gap between general model and specific model scores).
+        </p>
+
+        <h3>Final Model</h3>
+
+        <p>
+          Our final model uses a random forest classifier with 200 trees, trained on the general 2013 play-by-play dataset with the following X-parameters:
+          <ul>
+            <li>Time Remaining in Half</li>
+            <li>Time Remaining in Game</li>
+            <li>Down</li>
+            <li>Yards To Go</li>
+            <li>Score Differential</li>
+            <li>Absolute Score Differential</li>
+            <li>Game Week</li>
+            <li>Yard Line</li>
+            <li>Passer Rating</li>
+            <li>Rusher YPC</li>
+            <li>Rusher YPG</li>
+            <li>Defense Passing Y/A</li>
+            <li>Defense Rushing Y/A</li>
+            <li>Mean Temperature</li>
+            <li>Precipitation Inches</li>
+            <li>Mean Wind Speed MPH</li>
+            <li>Pass Success Rate</li>
+            <li>Run Success Rate</li>
+            <li>Pass Percentage</li>
+            <li>Run Percentage</li>
+          </ul>
+        The model achieved a score of .675 against the test data. You can see a slightly simplified version of this model in action on the <a href="model.html">model page</a>.
     </div>
 </div>
 </div>

@@ -10,7 +10,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <style>
-    body { padding-top: 70px; }
+    body { padding-top: 70px; padding-bottom: 20px; }
 
 
       text.mono {
@@ -65,6 +65,12 @@
         
       }
 
+      .field-row
+      {
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
     </style>
     <script src="http://d3js.org/d3.v3.js"></script>
   </head>
@@ -82,12 +88,137 @@
         </ul>
       </div>
     </nav>
-    <div class="row">
-      <div class="col-lg-8">
-        <div id="initialField"> <img src="initialField.gif" width = "100%"> </div>
+    <div class="container">
+    <h1>Model</h1>
+    <div class="row explanation-row">
+      <div class="col-md-6">
+        <h2>Instructions</h2>
+        <p>
+          Scroll down and use the inputs below to describe the game situation you'd like to predict from. This will populate the heatmap, with darker colors corresponding to a higher probability of a pass play. Each cell represents a yard line on the field and minute remaining in the half. For example, the top-left cell represents the 0 yard line (i.e., right next to the offense's own endzone) with 0 minutes remaining in the half. The bottom-right cell represents the 99 yard line (i.e., right next to the defense's endzone) with 30 minutes remaining in the half.
+        </p>
+      </div>
+      <div class="col-md=6">
+        <h2>How it Works</h2>
+        <p>
+          This page will make an AJAX call with the specified parameters to a <a href="http://www.djangoproject.com">Django</a> application that holds a serialized version of our trained random forest model. The server returns JSON data of the predicted probabilities at each point on the map, which are then plotted using <a href="http://d3js.org/">d3.js</a>.
+        </p>
+        <p>
+          Some attributes, like a team's QB and RB and their respective statistics, and a team's defense rankings, will be looked up automatically based on your selection and then run through the model.
+        </p>
+      </div>
+
+
+    <div class="row field-row">
+      <div class="col-lg-10">
+        <div id="initialField"> <img src="initialField.gif" width="100%"> </div>
         <div id="chart" ></div>
       </div>
-      <div id="inputs" class="col-lg-4">
+
+      <div class="col-lg-2">
+          <table class="table table-striped infobox">
+              <tr>
+                <th>Offense</th>
+                <td class="sit-offense"></td>
+              </tr>
+              <tr>
+                <th>Defense</th>
+                <td class="sit-defense"></td>
+              </tr>
+              <tr>
+                <th>Down</th>
+                <td class="sit-down"></td>
+              </tr>
+              <tr>
+                <th>Score Differential</th>
+                <td class="sit-score"></td>
+              </tr>
+              <tr>
+                <th>Temperature (Farenheit)</th>
+                <td class="sit-temp"></td>
+              </tr>
+              <tr>
+                <th>Rain (inches)</th>
+                <td class="sit-rain"></td>
+              </tr>
+              <tr>
+                <th>Wind Speed (MPH)</th>
+                <td class="sit-wind"></td>
+              </tr>
+                
+                
+                
+                
+                
+                
+                
+          </table>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="row infobox">
+      <div class="col-md-6">
+        <h1 class="offense-heading"></h1>
+        <div class="col-md-6">
+          <h3>QB: <span class="qb"></span></h3>
+          <div class="player-image-container">
+            <img class="img-qb" />
+          </div>
+          <ul>
+            <li>Passer Rating: <span class="passer-rating"></span></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h3>RB: <span class="rb"></span></h3>
+          <div class="player-image-container">
+            <img class="img-rb" />
+          </div>
+          <ul>
+            <li>Yards Per Carry: <span class="rush-ypc"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <h1 class="defense-heading"></h1>
+            <div class="col-md-6">
+              <h3>Run Defense</h3>
+              <div class="rank-box">
+                  <div class="rank-header">Against Run</div>
+                  <div class="rank-body rank-run"></div>
+              </div>
+              <ul>
+                <li>Yards Allowed Per Attempt: <span class="ya-run"></span></li>
+              </ul>
+            </div>
+
+            <div class="col-md-6">
+              <h3>Pass Defense</h3>
+              <div class="rank-box">
+                  <div class="rank-header">Against Pass</div>
+                  <div class="rank-body rank-pass"></div>
+              </div>
+              <ul>
+                <li>Yards Allowed Per Attempt: <span class="ya-pass"></span></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<hr>
+
+
+    <div class="row">
+      <h1>Game Situation</h1>
+    <div id="inputs" class="col-lg-12">
         <div class="row">
           <div class="col-md-4">
             <select name="Down" id="downInput" class="form-control">
@@ -197,83 +328,6 @@
         <br>
         <div class="row">
           <button type="button" id="submitMap" class="btn btn-primary btn-lg" style="width:100%" onclick="drawFieldMap()">Draw Field Map</button>
-        </div>
-      </div>
-    </div>
-    <div class="row infobox">
-      <div class="col-md-12">
-        <h2>Situation</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Offense</th>
-              <th>Defense</th>
-              <th>Down</th>
-              <th>Score Differential</th>
-              <th>Temperature (Farenheit)</th>
-              <th>Rain (inches)</th>
-              <th>Wind Speed (MPH)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="sit-offense"></td>
-              <td class="sit-defense"></td>
-              <td class="sit-down"></td>
-              <td class="sit-score"></td>
-              <td class="sit-temp"></td>
-              <td class="sit-rain"></td>
-              <td class="sit-wind"></td>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row infobox">
-      <div class="col-md-6">
-        <h1 class="offense-heading"></h1>
-        <div class="col-md-6">
-          <h3>QB: <span class="qb"></span></h3>
-          <div class="player-image-container">
-            <img class="img-qb" />
-          </div>
-          <ul>
-            <li>Passer Rating: <span class="passer-rating"></span></li>
-          </ul>
-        </div>
-        <div class="col-md-6">
-          <h3>RB: <span class="rb"></span></h3>
-          <div class="player-image-container">
-            <img class="img-rb" />
-          </div>
-          <ul>
-            <li>Yards Per Carry: <span class="rush-ypc"></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <h1 class="defense-heading"></h1>
-            <div class="col-md-6">
-              <h3>Run Defense</h3>
-              <div class="rank-box">
-                  <div class="rank-header">Against Run</div>
-                  <div class="rank-body rank-run"></div>
-              </div>
-              <ul>
-                <li>Yards Allowed Per Attempt: <span class="ya-run"></span></li>
-              </ul>
-            </div>
-
-            <div class="col-md-6">
-              <h3>Pass Defense</h3>
-              <div class="rank-box">
-                  <div class="rank-header">Against Pass</div>
-                  <div class="rank-body rank-pass"></div>
-              </div>
-              <ul>
-                <li>Yards Allowed Per Attempt: <span class="ya-pass"></span></li>
-              </ul>
-            </div>
         </div>
       </div>
     </div>
@@ -500,5 +554,6 @@
     }
 
     </script>
+  </div>
   </body>
 </html>
