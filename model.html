@@ -90,6 +90,7 @@
     </nav>
     <div class="container">
     <h1>Model</h1>
+    <div class="viz">
     <div class="row explanation-row">
       <div class="col-md-6">
         <h2>Instructions</h2>
@@ -106,8 +107,6 @@
           Some attributes, like a team's QB and RB and their respective statistics, and a team's defense rankings, will be looked up automatically based on your selection and then run through the model.
         </p>
       </div>
-
-
     <div class="row field-row">
       <div class="col-lg-10">
         <div id="initialField"> <img src="initialField.gif" width="100%"> </div>
@@ -553,7 +552,22 @@
       }
     }
 
+    $(function(){
+      var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+      // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+      var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+      var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+          // At least Safari 3+: "[object HTMLElementConstructor]"
+      var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
+      var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
+
+      if (!isChrome)
+      {
+        $('.viz').html('<div style="display:block;">Please use <a href="http://www.google.com/chrome/">Google Chorme</a> to view this visualization.</div>')
+      }
+    });
     </script>
+  </div>
   </div>
   </body>
 </html>
