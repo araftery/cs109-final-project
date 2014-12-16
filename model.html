@@ -347,6 +347,7 @@
     colors = ["#64e500","#57cf03","#4BBA06","#3fa509","#33900D","#267b10","#1a6613","#0e5116","#023c1a"], // alternatively colorbrewer.YlGnBu[9]
     timeRems = d3.range(0.0,totalTimes,1),
     yardLines = d3.range(0,totalYards,1);
+    var qb;
 
     $(function(){
       $(".infobox").hide();
@@ -445,8 +446,9 @@
             $('.ya-run').html(initData['defense_rush_ya']);
             $('.ya-pass').html(initData['defense_pass_ya']);
 
-            $('.img-qb').attr('src', 'player_images/' + initData['qb'].toLowerCase().replace(' ', '_').replace("'", '') + '.png');
-            $('.img-rb').attr('src', 'player_images/' + initData['rb'].toLowerCase().replace(' ', '_').replace("'", '') + '.png');
+            $('.img-qb').attr('src', 'player_images/' + initData['qb'].toLowerCase().replace(/ /g, '_').replace(/'/g, '') + '.png');
+            $('.img-rb').attr('src', 'player_images/' + initData['rb'].toLowerCase().replace(/ /g, '_').replace(/'/g, '') + '.png');
+            var qb = initData['qb'];
 
             $('.infobox').show();
 
